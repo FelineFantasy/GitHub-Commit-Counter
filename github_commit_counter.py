@@ -1,3 +1,4 @@
+import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -22,6 +23,9 @@ def main():
     while True:
         try:
             year = int(input("Введите год (например, 2026): "))
+            if year < 2008 or year > datetime.datetime.now().year:
+                print(f"Ошибка: год должен быть между 2008 и {datetime.datetime.now().year}")
+                continue
             break
         except ValueError:
             print("Ошибка: год должен быть числом!")
