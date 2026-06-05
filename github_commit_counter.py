@@ -5,6 +5,10 @@ import time
 from calendar import monthrange
 
 
+def progress_bar(month):
+    print(f"\r[{'=' * month}>{' ' * (12 - month)}] {month}/12", end="", flush=True)
+
+
 def main():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -27,8 +31,7 @@ def main():
         except ValueError:
             print("Ошибка: год должен быть числом!")
 
-    print(f"\nПодсчет коммитов для {username} за {year} год...")
-    print("=" * 50)
+    print(f"\nПодсчет коммитов для {username} за {year} год...\n")
 
     total_commits = 0
 
@@ -37,7 +40,6 @@ def main():
             last_day = monthrange(year, month)[1]
             from_date = f"{year}-{month:02d}-01"
             to_date = f"{year}-{month:02d}-{last_day:02d}"
-            month_name = f"{month_names[month - 1]} {year}"
 
             url = (
                 f"https://github.com/{username}?tab=overview&from={from_date}"
@@ -59,10 +61,9 @@ def main():
                     pass
 
             total_commits += month_commits
-            print(f"{month_name}: {month_commits} коммитов")
+            progress_bar(month)
 
-        print("=" * 50)
-        print(f"всего за {year} год: {total_commits} коммитов")
+        print(f"\n\nвсего за {year} год: {total_commits} коммитов")
 
     finally:
         driver.quit()
