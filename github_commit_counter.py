@@ -17,11 +17,6 @@ def main():
 
     driver = webdriver.Chrome(options=chrome_options)
 
-    month_names = [
-        "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
-        "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
-    ]
-
     username = input("Введите GitHub username: ")
 
     while True:
