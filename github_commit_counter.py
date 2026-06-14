@@ -7,7 +7,10 @@ from calendar import monthrange
 
 
 def progress_bar(month):
-    print(f"\r[{'=' * month}>{' ' * (12 - month)}] {month}/12", end="", flush=True)
+    equals = "=" * month
+    spaces = " " * (12 - month)
+    bar = equals + ">" + spaces
+    print(f"\r[{bar}] {month}/12", end="", flush=True)
 
 
 def main():
