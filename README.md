@@ -12,7 +12,7 @@ Counts the number of a GitHub user's commits for a specified year using Selenium
 ## 📦 Installation
 
 ```bash
-pip install selenium beautifulsoup4
+pip install -r requirements.txt
 ```
 *Note: Chrome and ChromeDriver are also required (must be in your PATH or in the same directory).*
 
