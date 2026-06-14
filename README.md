@@ -28,14 +28,12 @@ python github_commit_counter.py
 Enter GitHub username: FelineFantasy
 Enter year (e.g., 2026): 2026
 
-Counting commits for FelineFantasy for the year 2026...
-==================================================
-March 2026: 16 commits
-April 2026: 37 commits
-May 2026: 89 commits
-June 2026: 19 commits
-...
-==================================================
+Counting commits for FelineFantasy for 2026...
+
+[===>         ] 3/12
+[========>    ] 8/12
+[============>] 12/12
+
 Total for 2026: 161 commits
 ```
 
