@@ -48,7 +48,6 @@ def main():
                 f"&to={to_date}"
             )
             driver.get(url)
-            time.sleep(1)
 
             soup = BeautifulSoup(driver.page_source, "html.parser")
             commits = soup.find_all("span", class_="color-fg-default ws-normal text-left")
