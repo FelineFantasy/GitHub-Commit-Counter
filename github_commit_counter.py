@@ -1,8 +1,8 @@
 import datetime
+from calendar import monthrange
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from bs4 import BeautifulSoup
-from calendar import monthrange
 
 
 def progress_bar(month):
