@@ -40,7 +40,6 @@ Total for 2026: 161 commits
 ## ⚠️ Notes
 
 - Runs in headless mode (the browser window will not open).
-- Includes a `time.sleep(1)` delay between requests for stability.
 - Web scraping may fail if GitHub changes its HTML layout.
 
 ## 👤 Author
