@@ -42,6 +42,16 @@ Total for 2026: 161 commits
 - Runs in headless mode (the browser window will not open).
 - Web scraping may fail if GitHub changes its HTML layout.
 
+---
+
+## 🙏 Inspiration
+
+The progress bar was inspired by the beautiful progress bars in Cargo (Rust's build system).
+I loved how it looked and decided to bring it into my Python project.
+Thank you, Cargo! 🦀
+
+---
+
 ## 👤 Author
 - **FelineFantasy**
 - **License**: MIT
