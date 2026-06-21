@@ -25,16 +25,16 @@ python github_commit_counter.py
 ## 📝 Example Output
 
 ```text
-Enter GitHub username: FelineFantasy
-Enter year (e.g., 2026): 2026
+Введите GitHub username: FelineFantasy
+Введите год (например, 2026): 2026
 
-Counting commits for FelineFantasy for 2026...
+Подсчет коммитов для FelineFantasy за 2026 год...
 
 [===>         ] 3/12
 [========>    ] 8/12
 [============>] 12/12
 
-Total for 2026: 161 commits
+всего за 2026 год: 161 коммитов
 ```
 
 ## ⚠️ Notes
