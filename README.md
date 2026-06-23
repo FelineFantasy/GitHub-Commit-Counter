@@ -1,20 +1,29 @@
 # 📊 GitHub Commit Counter
 
-Counts the number of a GitHub user's commits for a specified year using Selenium.
+Counts the total number of commits made by a GitHub user in a specified year using the GitHub GraphQL API.
 
 ## 🎯 Features
 
-- Asks for a username and a year
-- Parses GitHub using Selenium
-- Displays the commit count broken down by month
-- Shows the total number of commits for the year
+- Asks for a GitHub username, a year, and a personal access token
+- Uses GitHub's GraphQL API for fast and reliable data retrieval
+- Displays the total number of commits for the specified year
 
 ## 📦 Installation
 
 ```bash
 pip install -r requirements.txt
 ```
-*Note: Chrome and ChromeDriver are also required (must be in your PATH or in the same directory).*
+
+### Requirements
+- Python 3.6+
+- `requests` library
+- GitHub Personal Access Token (see setup below)
+
+### Setting up a GitHub Token
+1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
+2. Click "Generate new token (classic)"
+3. Give it a name and select the `repo` scope (or `public_repo` for public repositories only)
+4. Generate and copy your token
 
 ## 🚀 Usage
 
@@ -22,33 +31,41 @@ pip install -r requirements.txt
 python github_commit_counter.py
 ```
 
+### Interactive Input
+The script will prompt you for:
+1. **GitHub username** - The user whose commits you want to count
+2. **Year** - The year to check (e.g., 2026)
+3. **GitHub token** - Your personal access token (input will be hidden for security)
+
 ## 📝 Example Output
 
 ```text
 Введите GitHub username: FelineFantasy
 Введите год (например, 2026): 2026
+Введите GitHub токен: ghp_xxxxxxxxxxxxxxxxxxxx
 
-Подсчет коммитов для FelineFantasy за 2026 год...
-
-[===>         ] 3/12
-[========>    ] 8/12
-[============>] 12/12
-
-всего за 2026 год: 161 коммитов
+Всего коммитов за 2026: 161
 ```
 
 ## ⚠️ Notes
 
-- Runs in headless mode (the browser window will not open).
-- Web scraping may fail if GitHub changes its HTML layout.
+- A GitHub token is **required** to use the GitHub GraphQL API
+- Rate limits apply based on your token type:
+  - Unauthenticated: 60 requests/hour (not used in this script)
+  - Authenticated: 5,000 requests/hour
+- The token does not need to be stored in the code; it's entered at runtime
 
----
+## 🛠 Technical Details
 
-## 🙏 Inspiration
+- Uses GitHub's official GraphQL API endpoint
+- Queries `contributionsCollection` for accurate commit counting
+- Handles date ranges automatically for the full year
 
-The progress bar was inspired by the beautiful progress bars in Cargo (Rust's build system).
-I loved how it looked and decided to bring it into my Python project.
-Thank you, Cargo! 🦀
+## ❗ Common Issues
+
+- **Invalid token**: Ensure your token has the correct permissions
+- **Rate limiting**: If you hit the limit, wait an hour and try again
+- **User not found**: Verify the username is spelled correctly
 
 ---
 
