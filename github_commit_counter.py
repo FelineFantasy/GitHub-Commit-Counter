@@ -1,7 +1,5 @@
-import datetime
 import os
 import requests
-from calendar import monthrange
 
 def load_env():
     """Загружает токен из .env файла."""
