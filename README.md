@@ -8,10 +8,13 @@ Counts the total number of commits made by a GitHub user in a specified year usi
 - Uses GitHub's GraphQL API for fast and reliable data retrieval
 - Displays the total number of commits for the specified year
 
-## 📦 Installation
+## 🛠️ Installation
 
 ```bash
+git clone https://github.com/FelineFantasy/GitHub-Commit-Counter.git
+cd GitHub-Commit-Counter
 pip install -r requirements.txt
+python github_commit_counter.py
 ```
 
 ### Requirements
@@ -24,12 +27,6 @@ pip install -r requirements.txt
 2. Click "Generate new token (classic)"
 3. Give it a name and select the `repo` scope (or `public_repo` for public repositories only)
 4. Generate and copy your token
-
-## 🚀 Usage
-
-```bash
-python github_commit_counter.py
-```
 
 ### Interactive Input
 The script will prompt you for:
