@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 
 def load_env():
     """Загружает токен из .env файла."""
@@ -19,6 +20,18 @@ def save_env(token):
     except:
         pass
 
+def validate_username(username):
+    """Проверяет корректность username."""
+    if not username or len(username.strip()) < 1:
+        return False
+    allowed_chars = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-")
+    return all(c in allowed_chars for c in username.strip())
+
+def validate_year(year):
+    """Проверяет корректность года."""
+    current_year = datetime.now().year
+    return 2008 <= year <= current_year
+
 def get_commits(username, year, token):
     url = "https://api.github.com/graphql"
     query = """
@@ -36,13 +49,49 @@ def get_commits(username, year, token):
         "to": f"{year}-12-31T23:59:59Z"
     }
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.post(url, json={"query": query, "variables": variables}, headers=headers)
-    data = response.json()
-    return data["data"]["user"]["contributionsCollection"]["totalCommitContributions"]
+
+    try:
+        response = requests.post(url, json={"query": query, "variables": variables}, headers=headers)
+        response.raise_for_status()
+        
+        data = response.json()
+
+        if "errors" in data:
+            error_msg = data["errors"][0].get("message", "Unknown error")
+            print(f"Ошибка API GitHub: {error_msg}")
+            return None
+
+        if not data.get("data") or not data["data"].get("user"):
+            print("Пользователь не найден или нет данных")
+            return None
+            
+        return data["data"]["user"]["contributionsCollection"]["totalCommitContributions"]
+        
+    except requests.exceptions.RequestException as e:
+        print(f"Ошибка сети: {e}")
+        return None
+    except KeyError as e:
+        print(f"Ошибка парсинга данных: {e}")
+        return None
+    except Exception as e:
+        print(f"Неожиданная ошибка: {e}")
+        return None
 
 def main():
-    username = input("Введите GitHub username: ")
-    year = int(input("Введите год (например, 2026): "))
+    while True:
+        username = input("Введите GitHub username: ").strip()
+        if validate_username(username):
+            break
+        print("Ошибка: неверный формат username. Используйте буквы, цифры и дефис.")
+
+    while True:
+        try:
+            year = int(input("Введите год (например, 2026): "))
+            if validate_year(year):
+                break
+            print(f"Ошибка: год должен быть между 2008 и {datetime.now().year}")
+        except ValueError:
+            print("Ошибка: введите число")
 
     token = load_env()
     if token:
@@ -53,7 +102,11 @@ def main():
         print("Токен сохранён в .env")
 
     commits = get_commits(username, year, token)
-    print(f"Всего коммитов за {year}: {commits}")
+    
+    if commits is not None:
+        print(f"Всего коммитов за {year}: {commits}")
+    else:
+        print("Не удалось получить данные. Проверьте username, токен и подключение к интернету.")
 
 if __name__ == "__main__":
     main()
