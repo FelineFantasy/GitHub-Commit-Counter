@@ -1,15 +1,30 @@
 import os
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
 
-def load_env():
-    """Загружает токен из .env файла."""
+load_dotenv()
+
+def get_token():
+    """Получает токен из переменных окружения."""
+    token = os.getenv("GITHUB_TOKEN")
+
+    if token:
+        print("Токен загружен из переменных окружения")
+        return token
+
     if os.path.exists(".env"):
         with open(".env", "r") as f:
             for line in f:
                 if line.startswith("GITHUB_TOKEN="):
-                    return line.strip().split("=", 1)[1]
-    return None
+                    token = line.strip().split("=", 1)[1]
+                    print("Токен загружен из .env файла")
+                    return token
+
+    token = input("Введите GitHub токен: ")
+    save_env(token)
+    print("Токен сохранён в .env")
+    return token
 
 def save_env(token):
     """Сохраняет токен в .env файл."""
@@ -64,9 +79,9 @@ def get_commits(username, year, token):
         if not data.get("data") or not data["data"].get("user"):
             print("Пользователь не найден или нет данных")
             return None
-            
+ 
         return data["data"]["user"]["contributionsCollection"]["totalCommitContributions"]
-        
+
     except requests.exceptions.RequestException as e:
         print(f"Ошибка сети: {e}")
         return None
@@ -93,16 +108,9 @@ def main():
         except ValueError:
             print("Ошибка: введите число")
 
-    token = load_env()
-    if token:
-        print("Токен загружен из .env")
-    else:
-        token = input("Введите GitHub токен: ")
-        save_env(token)
-        print("Токен сохранён в .env")
-
+    token = get_token()
     commits = get_commits(username, year, token)
-    
+
     if commits is not None:
         print(f"Всего коммитов за {year}: {commits}")
     else:
