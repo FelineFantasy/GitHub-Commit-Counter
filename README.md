@@ -64,7 +64,18 @@ The script will prompt you for:
 - **Rate limiting**: If you hit the limit, wait an hour and try again
 - **User not found**: Verify the username is spelled correctly
 
----
+## 💖 Support the Project
+
+If you enjoy **CatMemesAPI** and want to help keep the project alive, you can support me here:
+
+[![DonationAlerts](https://img.shields.io/badge/DonationAlerts-Support-blue.svg)](https://www.donationalerts.com/r/FelineFantasy)
+
+Your support helps me:
+- 🐱 Keep developing new features
+- 🛠️ Fix bugs and improve the game
+- ☕ Stay awake while coding at 4 AM
+
+Every little bit is appreciated! ❤️
 
 ## 👤 Author
 - **FelineFantasy**
