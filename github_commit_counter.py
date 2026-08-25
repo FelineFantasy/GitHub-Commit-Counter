@@ -35,7 +35,7 @@ def save_env(token: str) -> None:
         f.write(f"GITHUB_TOKEN={token}\n")
     try:
         os.chmod(".env", 0o600)
-    except:
+    except Exception:
         pass
 
 
