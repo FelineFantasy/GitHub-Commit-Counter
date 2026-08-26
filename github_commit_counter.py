@@ -3,6 +3,7 @@ from typing import Optional, Set
 import requests
 from datetime import datetime
 from dotenv import load_dotenv
+import getpass
 
 load_dotenv()
 
@@ -23,7 +24,7 @@ def get_token() -> str:
                     print("Токен загружен из .env файла")
                     return token
 
-    token = input("Введите GitHub токен: ")
+    token = getpass.getpass("Введите GitHub токен: ")
     save_env(token)
     print("Токен сохранён в .env")
     return token
