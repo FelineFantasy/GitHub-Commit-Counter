@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+Fetch total GitHub user commits for a given year using GraphQL API.
+"""
+
 import os
 from typing import Optional, Set
 import requests
