@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 from typing import Optional, Set
 import requests
