@@ -14,7 +14,7 @@ Counts the total number of commits made by a GitHub user in a specified year usi
 git clone https://github.com/FelineFantasy/GitHub-Commit-Counter
 cd GitHub-Commit-Counter
 pip install -r requirements.txt
-python github_commit_counter.py
+python main.py
 ```
 
 ### Requirements
