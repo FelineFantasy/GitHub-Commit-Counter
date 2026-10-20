@@ -8,10 +8,7 @@ import os
 from typing import Optional, Set
 import requests
 from datetime import datetime
-from dotenv import load_dotenv
 import getpass
-
-load_dotenv()
 
 
 def get_token() -> str:
