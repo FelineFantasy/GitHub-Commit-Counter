@@ -22,6 +22,29 @@ python main.py
 - `requests` library
 - GitHub Personal Access Token (see setup below)
 
+## 🚀 Usage
+
+Run the script without arguments to answer the prompts:
+
+```bash
+python main.py
+```
+
+Pass the username and year to skip them:
+
+```bash
+python main.py FelineFantasy 2026
+```
+
+Add `--json` to get machine-readable output for scripts:
+
+```bash
+python main.py FelineFantasy 2026 --json
+# {"username": "FelineFantasy", "year": 2026, "commits": 161}
+```
+
+The script exits with status `0` on success and `1` when the arguments are invalid or the data cannot be fetched.
+
 ### Setting up a GitHub Token
 1. Go to GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
 2. Click "Generate new token (classic)"
@@ -29,7 +52,7 @@ python main.py
 4. Generate and copy your token
 
 ### Interactive Input
-The script will prompt you for:
+If you leave out the username or the year, the script will prompt you for the missing value:
 1. **GitHub username** - The user whose commits you want to count
 2. **Year** - The year to check (e.g., 2026)
 3. **GitHub token** - Your personal access token (input will be hidden for security)
@@ -63,6 +86,14 @@ The script will prompt you for:
 - **Invalid token**: Ensure your token has the correct permissions
 - **Rate limiting**: If you hit the limit, wait an hour and try again
 - **User not found**: Verify the username is spelled correctly
+
+## ✅ Running Tests
+
+The test suite uses only the standard library's `unittest`:
+
+```bash
+python -m unittest discover -s tests -t . -v
+```
 
 ## 💖 Support the Project
 
