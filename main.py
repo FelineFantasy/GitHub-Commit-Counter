@@ -11,6 +11,17 @@ from datetime import datetime
 import getpass
 
 
+CONTRIBUTIONS_QUERY: str = """
+query($username: String!, $from: DateTime!, $to: DateTime!) {
+  user(login: $username) {
+    contributionsCollection(from: $from, to: $to) {
+      totalCommitContributions
+    }
+  }
+}
+"""
+
+
 def get_token() -> str:
     """Получает токен из переменных окружения."""
     token: Optional[str] = os.getenv("GITHUB_TOKEN")
@@ -62,15 +73,7 @@ def validate_year(year: int) -> bool:
 def get_commits(username: str, year: int, token: str) -> Optional[int]:
     """Получает количество коммитов пользователя за указанный год."""
     url: str = "https://api.github.com/graphql"
-    query: str = """
-    query($username: String!, $from: DateTime!, $to: DateTime!) {
-      user(login: $username) {
-        contributionsCollection(from: $from, to: $to) {
-          totalCommitContributions
-        }
-      }
-    }
-    """
+    query: str = CONTRIBUTIONS_QUERY
     variables: dict = {
         "username": username,
         "from": f"{year}-01-01T00:00:00Z",
