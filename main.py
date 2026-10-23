@@ -5,7 +5,8 @@ Fetch total GitHub user commits for a given year using GraphQL API.
 """
 
 import os
-from typing import Optional, Set
+from typing import List, Optional, Set
+import argparse
 import requests
 from datetime import datetime
 import getpass
@@ -109,22 +110,59 @@ def get_commits(username: str, year: int, token: str) -> Optional[int]:
         return None
 
 
-def main() -> None:
-    """Основная функция программы."""
+def prompt_username() -> str:
+    """Запрашивает username, пока не будет введён корректный."""
     while True:
         username: str = input("Введите GitHub username: ").strip()
         if validate_username(username):
-            break
+            return username
         print("Ошибка: неверный формат username. Используйте буквы, цифры и дефис.")
 
+
+def prompt_year() -> int:
+    """Запрашивает год, пока не будет введён корректный."""
     while True:
         try:
             year: int = int(input("Введите год (например, 2026): "))
             if validate_year(year):
-                break
+                return year
             print(f"Ошибка: год должен быть между 2008 и {datetime.now().year}")
         except ValueError:
             print("Ошибка: введите число")
+
+
+def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
+    """Разбирает аргументы командной строки."""
+    parser = argparse.ArgumentParser(
+        description="Считает количество коммитов GitHub-пользователя за указанный год."
+    )
+    parser.add_argument("username", nargs="?", help="GitHub username")
+    parser.add_argument("year", nargs="?", type=int, help="год (2008 или позже)")
+    return parser.parse_args(argv)
+
+
+def main(argv: Optional[List[str]] = None) -> None:
+    """Основная функция программы."""
+    args: argparse.Namespace = parse_args(argv)
+    username: str
+
+    if args.username is None:
+        username = prompt_username()
+    else:
+        username = args.username.strip()
+        if not validate_username(username):
+            print("Ошибка: неверный формат username. Используйте буквы, цифры и дефис.")
+            return
+
+    year: int
+
+    if args.year is None:
+        year = prompt_year()
+    else:
+        year = args.year
+        if not validate_year(year):
+            print(f"Ошибка: год должен быть между 2008 и {datetime.now().year}")
+            return
 
     token: str = get_token()
     commits: Optional[int] = get_commits(username, year, token)
