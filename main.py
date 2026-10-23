@@ -7,6 +7,8 @@ Fetch total GitHub user commits for a given year using GraphQL API.
 import os
 from typing import List, Optional, Set
 import argparse
+import json
+import sys
 import requests
 from datetime import datetime
 import getpass
@@ -138,11 +140,24 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     )
     parser.add_argument("username", nargs="?", help="GitHub username")
     parser.add_argument("year", nargs="?", type=int, help="год (2008 или позже)")
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="вывести результат в формате JSON (удобно для скриптов)",
+    )
     return parser.parse_args(argv)
 
 
-def main(argv: Optional[List[str]] = None) -> None:
-    """Основная функция программы."""
+def print_error(message: str, as_json: bool = False) -> None:
+    """Выводит ошибку в выбранном формате."""
+    if as_json:
+        print(json.dumps({"error": message}, ensure_ascii=False))
+    else:
+        print(message)
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    """Основная функция программы. Возвращает код выхода."""
     args: argparse.Namespace = parse_args(argv)
     username: str
 
@@ -151,8 +166,11 @@ def main(argv: Optional[List[str]] = None) -> None:
     else:
         username = args.username.strip()
         if not validate_username(username):
-            print("Ошибка: неверный формат username. Используйте буквы, цифры и дефис.")
-            return
+            print_error(
+                "Ошибка: неверный формат username. Используйте буквы, цифры и дефис.",
+                args.json,
+            )
+            return 1
 
     year: int
 
@@ -161,17 +179,34 @@ def main(argv: Optional[List[str]] = None) -> None:
     else:
         year = args.year
         if not validate_year(year):
-            print(f"Ошибка: год должен быть между 2008 и {datetime.now().year}")
-            return
+            print_error(
+                f"Ошибка: год должен быть между 2008 и {datetime.now().year}",
+                args.json,
+            )
+            return 1
 
     token: str = get_token()
     commits: Optional[int] = get_commits(username, year, token)
 
-    if commits is not None:
-        print(f"Всего коммитов за {year}: {commits}")
+    if commits is None:
+        print_error(
+            "Не удалось получить данные. Проверьте username, токен и подключение к интернету.",
+            args.json,
+        )
+        return 1
+
+    if args.json:
+        print(
+            json.dumps(
+                {"username": username, "year": year, "commits": commits},
+                ensure_ascii=False,
+            )
+        )
     else:
-        print("Не удалось получить данные. Проверьте username, токен и подключение к интернету.")
+        print(f"Всего коммитов за {year}: {commits}")
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
